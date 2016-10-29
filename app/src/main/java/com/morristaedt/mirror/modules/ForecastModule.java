@@ -42,14 +42,14 @@ public class ForecastModule {
             @Override
             protected ForecastResponse doInBackground(Void... params) {
                 RestAdapter restAdapter = new RestAdapter.Builder()
-                        .setEndpoint("https://api.forecast.io")
+						.setEndpoint("http://api.openweathermap.org/data/2.5")
                         .build();
 
                 ForecastRequest service = restAdapter.create(ForecastRequest.class);
                 String excludes = "minutely,daily,flags";
 
                 try {
-                    return service.getHourlyForecast(apiKey, lat, lon, excludes, units, Locale.getDefault().getLanguage());
+                    return service.getHourlyForecast(apiKey, lat, lon);
                 } catch (RetrofitError error) {
                     Log.w("ForecastModule", "Forecast error: " + error.getMessage());
                     return null;

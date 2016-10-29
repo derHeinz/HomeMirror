@@ -9,9 +9,10 @@ import retrofit.http.Query;
  */
 public interface ForecastRequest {
 
-    public static final String UNITS_SI = "si";
-    public static final String UNITS_US = "us";
+    String UNITS_SI = "si";
+    String UNITS_US = "us";
 
-    @GET("/forecast/{apikey}/{lat},{lon}")
-    ForecastResponse getHourlyForecast(@Path("apikey") String apiKey, @Path("lat") String lat, @Path("lon") String lon, @Query("exclude") String exclude, @Query("units") String units, @Query("lang") String language);
+    //@GET("/forecast/{apikey}/{lat},{lon}")
+    @GET("/weather")
+    ForecastResponse getHourlyForecast(@Query("appid") String apiKey, @Query("lat") String lat, @Query("lon") String lon);
 }
