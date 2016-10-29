@@ -26,7 +26,8 @@ public class NewsModule {
             @Override
             protected String doInBackground(Void... params) {
                 RSSReader rssReader = new RSSReader();
-                String url = "http://feeds.bbci.co.uk/news/world/rss.xml?edition=uk";
+                // TODO configurable
+				String url = "http://www.spiegel.de/schlagzeilen/index.rss";
                 try {
                     RSSFeed feed = rssReader.load(url);
                     String headline = feed.getItems().get(0).getTitle();
