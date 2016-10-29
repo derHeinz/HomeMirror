@@ -2,6 +2,7 @@ package com.morristaedt.mirror;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.ColorFilter;
 import android.graphics.ColorMatrixColorFilter;
 import android.os.Build;
@@ -24,14 +25,17 @@ import com.morristaedt.mirror.modules.CountdownModule;
 import com.morristaedt.mirror.modules.DayModule;
 import com.morristaedt.mirror.modules.ForecastModule;
 import com.morristaedt.mirror.modules.MoodModule;
+import com.morristaedt.mirror.modules.NASAIotdModule;
 import com.morristaedt.mirror.modules.NewsModule;
-import com.morristaedt.mirror.modules.XKCDModule;
 import com.morristaedt.mirror.modules.YahooFinanceModule;
 import com.morristaedt.mirror.receiver.AlarmReceiver;
 import com.morristaedt.mirror.requests.YahooStockResponse;
+import com.morristaedt.mirror.utils.URIUtil;
 import com.morristaedt.mirror.utils.WeekUtil;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.ref.WeakReference;
 
 public class MirrorActivity extends ActionBarActivity {
@@ -55,6 +59,8 @@ public class MirrorActivity extends ActionBarActivity {
     private TextView mCalendarDetailsText;
     private TextView mCountdownText;
 
+    // TODO make it a generic picture area and configurable whether XKCD or NASA IotD
+    /*
     private XKCDModule.XKCDListener mXKCDListener = new XKCDModule.XKCDListener() {
         @Override
         public void onNewXKCDToday(String url) {
@@ -62,6 +68,19 @@ public class MirrorActivity extends ActionBarActivity {
                 mXKCDImage.setVisibility(View.GONE);
             } else {
                 Picasso.with(MirrorActivity.this).load(url).into(mXKCDImage);
+                mXKCDImage.setVisibility(View.VISIBLE);
+            }
+        }
+    };
+    */
+
+    private NASAIotdModule.NASAIotdListener nasaImageOfTheDayListener = new NASAIotdModule.NASAIotdListener() {
+        @Override
+        public void onNASAIotdToday(Bitmap img) {
+            if (img == null) {
+                mXKCDImage.setVisibility(View.GONE);
+            } else {
+                mXKCDImage.setImageBitmap(img);
                 mXKCDImage.setVisibility(View.VISIBLE);
             }
         }
@@ -269,7 +288,8 @@ public class MirrorActivity extends ActionBarActivity {
         }
 
         if (mConfigSettings.showXKCD()) {
-            XKCDModule.getXKCDForToday(mXKCDListener);
+            NASAIotdModule.getNASAImageOfTheDay(nasaImageOfTheDayListener);
+            //XKCDModule.getXKCDForToday(mXKCDListener);
         } else {
             mXKCDImage.setVisibility(View.GONE);
         }
