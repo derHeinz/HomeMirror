@@ -36,3 +36,4 @@ app/src/main/res/values/keys.xml
 app/fabric.properties
 mirror-keystore.jks
 signing.properties
+app/src/main/AndroidManifest.xml
